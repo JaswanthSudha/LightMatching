@@ -1,0 +1,418 @@
+# Light Matching Project
+
+An AI-powered system for matching lighting conditions between real scenes and computer-generated (CG) objects to achieve seamless integration using **pretrained computer vision models**.
+
+## Project Overview
+
+This project solves the common problem in visual effects and augmented reality where CG objects appear unnatural in real scenes due to lighting mismatches. Our solution leverages **existing pretrained models** (ResNet, VGG, DPT) combined with advanced computer graphics techniques to analyze lighting conditions and automatically adjust CG object lighting to match the scene.
+
+### 🚀 **No Training Required!**
+This system uses pretrained models from leading AI research, so you can get professional-quality results immediately without training custom neural networks.
+
+## ✨ Enhanced Features
+
+### **🧠 Pretrained AI Models**
+- **ResNet18**: Deep feature extraction for advanced scene analysis
+- **Intel DPT-Large**: Depth estimation for 3D-aware lighting
+- **VGG19**: Style-based refinement for realistic appearance
+- **Hybrid Processing**: Automatic fallback to traditional methods when needed
+
+### **💡 Advanced Light Analysis**
+- **Multi-Modal Light Estimation**: Combined CNN, depth, and traditional features
+- **Accurate Color Temperature**: Professional color science (2000K-10000K range)
+- **Directional Lighting**: Surface normal estimation with gradient analysis
+- **Shadow Detection**: Intelligent shadow mapping and strength calculation
+- **Ambient Light Separation**: Distinguishes ambient from directional lighting
+
+### **🎨 Enhanced Relighting**
+- **Multi-Stage Pipeline**: Color temp → Directional → Ambient → Shadows → Style
+- **LAB Color Processing**: Perceptually accurate color adjustments
+- **CLAHE Enhancement**: Adaptive contrast for better detail preservation
+- **Real-time Processing**: Optimized for both single images and video sequences
+- **Multiple CG Formats**: Support for PNG, JPG, and 3D model files
+
+## Project Structure
+
+```
+light-matching-project/
+├── src/                    # Source code
+│   ├── light_estimation/   # Light analysis modules
+│   ├── neural_relighting/  # AI relighting models
+│   ├── preprocessing/      # Image/video preprocessing
+│   └── postprocessing/     # Output enhancement
+├── models/                 # AI models
+│   ├── pretrained/        # Pre-trained model weights
+│   └── checkpoints/       # Training checkpoints
+├── data/                  # Data directory
+│   ├── input/            # Input images/videos
+│   ├── output/           # Processed results
+│   └── training/         # Training datasets
+├── utils/                # Utility functions
+├── tests/               # Unit tests
+├── examples/            # Example usage scripts
+└── docs/               # Documentation
+```
+
+## 💻 Installation
+
+### Quick Setup (Recommended)
+```bash
+# Clone the repository
+git clone <repository-url>
+cd light-matching-project
+
+# Install core dependencies
+pip install torch torchvision transformers
+pip install opencv-python pillow numpy scikit-learn pyyaml
+
+# Install optional enhancements
+pip install timm  # For better segmentation
+pip install accelerate datasets  # For faster model loading
+```
+
+### Full Installation
+```bash
+# Install all dependencies
+pip install -r requirements.txt
+```
+
+### ⚡ First Run
+The system will automatically download pretrained models (~2GB) on first use:
+- ResNet18 (~45MB)
+- Intel DPT-Large (~1.4GB) 
+- VGG19 (~550MB)
+
+## 🚀 Quick Start
+
+### Method 1: Simple Script
+```python
+# Edit paths in quick_test.py and run:
+python quick_test.py
+```
+
+### Method 2: Command Line
+```bash
+# Test with your own images
+python examples/test_real_images.py --scene path/to/scene.jpg --cg path/to/object.png
+
+# Analyze lighting only
+python examples/test_real_images.py --scene scene.jpg --cg object.png --analyze-only
+```
+
+### Method 3: Python API
+```python
+from src.light_matcher import LightMatcher
+
+# Initialize with pretrained models (default)
+matcher = LightMatcher()
+
+# Analyze scene lighting
+analysis = matcher.get_lighting_analysis("scene.jpg")
+print(f"Light direction: {analysis['lighting_direction']}")
+print(f"Color temperature: {analysis['color_temperature']}K")
+
+# Apply light matching
+result = matcher.match_lighting(
+    scene_image="data/input/scene.jpg",
+    cg_object="data/input/object.png", 
+    output_path="data/output/result.jpg"
+)
+```
+
+## 🔬 Advanced Methodology
+
+### **Stage 1: Enhanced Scene Analysis**
+- **Multi-Modal Feature Extraction**: ResNet18 deep features + traditional CV
+- **Depth-Aware Analysis**: Intel DPT-Large for 3D scene understanding
+- **Shadow & Highlight Detection**: Intelligent region segmentation
+- **Color Science**: Professional color temperature estimation
+
+### **Stage 2: AI-Powered Light Estimation**
+- **CNN Feature Analysis**: Deep semantic understanding of lighting
+- **Depth-Based Refinement**: 3D-aware light direction calculation
+- **Hybrid Prediction**: Combines AI and physics-based methods
+- **Robust Fallbacks**: Graceful degradation when models unavailable
+
+### **Stage 3: Multi-Stage Relighting**
+- **Color Temperature Adjustment**: LAB color space processing
+- **Directional Lighting**: Surface normal estimation with gradients
+- **Ambient Integration**: Separate ambient and direct lighting
+- **Shadow Enhancement**: Physics-based shadow generation
+- **Style Refinement**: VGG19-powered appearance matching
+- **Detail Enhancement**: CLAHE adaptive contrast improvement
+
+### **Stage 4: Intelligent Composition**
+- **Alpha-Aware Blending**: Smart object boundary detection
+- **Edge Smoothing**: Gaussian blur refinement
+- **Color Matching**: Histogram-based color correction
+
+## 🛠️ Technologies & Models
+
+### **Pretrained AI Models**
+- **ResNet18** (ImageNet): Deep feature extraction
+- **Intel DPT-Large**: Monocular depth estimation
+- **VGG19** (ImageNet): Style and texture analysis
+- **Transformers Pipeline**: Automated model loading
+
+### **Core Technologies**
+- **PyTorch**: Deep learning framework with CUDA support
+- **OpenCV**: Computer vision and image processing
+- **scikit-learn**: Machine learning utilities
+- **NumPy/SciPy**: Numerical computing
+- **Pillow**: Advanced image handling
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Research papers on inverse rendering and light estimation
+- Open source computer vision and graphics libraries
+- Deep learning frameworks and pretrained models
+
+---
+
+# 📷 Enhanced Image Preparation Guide
+
+**Optimized for AI-Powered Light Matching with Pretrained Models**
+
+This guide explains how to prepare real scene and CG object images for optimal results with our enhanced AI system that uses ResNet18, Intel DPT-Large, and VGG19 pretrained models.
+
+## 🎨 What's New with AI Enhancement
+
+Our system now provides **dramatically better results** because it:
+- **Understands scenes semantically** using ResNet18 deep features
+- **Estimates depth automatically** with Intel's DPT-Large model
+- **Refines appearance** using VGG19 style analysis
+- **Handles challenging lighting** with hybrid AI+traditional methods
+
+## 🌅 Scene Images (Enhanced AI Analysis)
+
+### ✨ What Makes a Good Scene Image?
+
+With our **AI-enhanced system**, we can now handle more challenging scenes!
+
+1. **🔆 Lighting Characteristics** (ResNet18 + Depth Analysis)
+   - **Excellent**: Clear directional lighting (sun, window, studio lights)
+   - **Good**: Mixed lighting with one dominant source
+   - **Now Supported**: Overcast scenes (AI depth estimation helps!)
+   - **Improved**: Complex multi-light setups (AI semantic understanding)
+
+2. **🌱 Shadow Information** (Depth-Aware Detection)
+   - **Best**: Visible shadows with clear edges
+   - **Good**: Soft shadows (depth model compensates)
+   - **New**: Even subtle shadows detected by AI
+   - **Enhanced**: Shadow direction calculated from 3D depth
+
+3. **🎨 Dynamic Range & Detail** (CNN Feature Analysis)
+   - **Optimal**: Full range 0-255 with good contrast
+   - **Good**: Slightly under/overexposed (CLAHE enhancement)
+   - **New**: Low-light scenes (deep features help)
+   - **Enhanced**: High-contrast scenes handled better
+
+4. **🏠 Surface Complexity** (Semantic Understanding)
+   - **Excellent**: Mixed textures, materials, and geometries
+   - **Good**: Consistent materials with shape variation
+   - **New**: Even flat scenes work (depth estimation adds 3D info)
+   - **Enhanced**: Reflective surfaces better handled
+
+### 🎆 AI-Enhanced Scene Compatibility
+
+#### ✅ **Excellent Results** (All AI Models Active)
+- **Outdoor scenes** with directional sun/sky lighting
+- **Indoor scenes** with window or artificial lighting
+- **Studio photography** with professional lighting setups
+- **Architectural photography** with good depth variation
+- **Portrait photography** with clear lighting direction
+
+#### 🔄 **Good Results** (AI Compensation)
+- **Overcast scenes** (depth model adds 3D understanding)
+- **Mixed lighting** (semantic analysis separates sources)
+- **Low-contrast scenes** (CLAHE enhancement helps)
+- **Backlit scenes** (depth-aware analysis works better)
+
+#### ⚠️ **Challenging** (Traditional Fallback)
+- **Completely uniform lighting** (minimal depth/shadow info)
+- **Extreme over/under-exposure** (limited pixel information)
+- **Pure mirror/chrome surfaces** (difficult for any method)
+- **Rapidly changing lighting** (for video sequences)
+
+## CG Object Images
+
+### What Makes a Good CG Object Image?
+
+1. **Neutral/Standard Lighting**
+   - Object should be lit with neutral lighting initially
+   - Avoid pre-baked dramatic lighting
+   - Consistent, diffuse lighting works best as starting point
+
+2. **Clear Object Boundaries**
+   - Object should be clearly separated from background
+   - Ideally use transparent/alpha background
+   - If no alpha channel, use contrasting background
+
+3. **Good Geometry Detail**
+   - Surface details and geometry should be visible
+   - Avoid completely flat/featureless objects
+   - Normal maps or surface variation help
+
+4. **Appropriate Resolution**
+   - At least 256x256 pixels
+   - Higher resolution (512x512 or 1024x1024) is better
+   - Match or exceed scene image resolution when possible
+
+### Supported Formats:
+- **Scene Images**: JPG, PNG, BMP, TIFF
+- **CG Objects**: PNG (preferred for transparency), JPG, BMP, TIFF
+
+## File Organization
+
+Create the following folder structure:
+```
+light-matching-project/
+├── data/
+│   ├── input/
+│   │   ├── scenes/          # Put your scene images here
+│   │   ├── cg_objects/      # Put your CG object images here
+│   │   └── masks/           # Optional: custom masks
+│   └── output/              # Results will be saved here
+```
+
+## 🚀 Enhanced Testing Workflow
+
+### Method 1: Quick Test (Recommended for Beginners)
+```bash
+# 1. Copy your images to the input folders
+# 2. Edit paths in quick_test.py
+# 3. Run:
+python quick_test.py
+```
+
+### Method 2: Command Line (Advanced)
+```bash
+# Analyze scene lighting with AI enhancement
+python examples/test_real_images.py \
+  --scene data/input/scenes/my_scene.jpg \
+  --cg data/input/cg_objects/my_object.png \
+  --analyze-only
+
+# Full AI-powered light matching
+python examples/test_real_images.py \
+  --scene data/input/scenes/my_scene.jpg \
+  --cg data/input/cg_objects/my_object.png \
+  --output data/output/my_result.jpg
+```
+
+### Method 3: Batch Processing
+```bash
+# Process multiple images
+for scene in data/input/scenes/*.jpg; do
+  for cg in data/input/cg_objects/*.png; do
+    python examples/test_real_images.py --scene "$scene" --cg "$cg" \
+      --output "data/output/$(basename "$scene" .jpg)_$(basename "$cg" .png)_result.jpg"
+  done
+done
+```
+
+## 🏆 AI-Enhanced Tips for Best Results
+
+### 🌅 Scene Selection (AI-Optimized)
+1. **Trust the AI**: Even challenging scenes work better now!
+2. **Depth Variety**: AI loves scenes with foreground/background elements
+3. **Semantic Richness**: Include recognizable objects (AI understands context)
+4. **Lighting Variety**: Mixed lighting is now handled intelligently
+
+### 🎭 CG Object Preparation (Enhanced Processing)
+1. **Detail Preservation**: High-resolution objects get better AI refinement
+2. **Material Variety**: AI handles different materials better than before
+3. **Edge Definition**: Clear boundaries help AI composition
+4. **Neutral Starting Point**: Let AI do the heavy lifting from neutral lighting
+
+### 🛠️ AI-Specific Troubleshooting
+
+| Problem | AI Solution | Traditional Fallback |
+|---------|-------------|----------------------|
+| Poor lighting detection | ResNet18 semantic analysis | Manual shadow/highlight adjustment |
+| Flat appearance | VGG19 style refinement | Traditional normal mapping |
+| Wrong colors | LAB color space processing | Basic RGB adjustment |
+| Depth issues | Intel DPT depth estimation | Gradient-based estimation |
+| Complex shadows | Multi-stage AI pipeline | Simple shadow masking |
+| Style mismatch | CNN feature matching | Histogram equalization |
+
+## Example Image Sets
+
+Good examples to try:
+1. **Outdoor Portrait Setup**: Person in natural lighting + simple 3D character
+2. **Product Photography**: Well-lit product shot + 3D product model
+3. **Architectural Scene**: Building exterior + 3D furniture/objects
+4. **Studio Setup**: Professional lighting + 3D props
+
+## 🚀 Advanced AI Tips
+
+### 📊 Performance Monitoring
+```bash
+# Check which AI models are active
+python -c "from src.light_matcher import LightMatcher; m=LightMatcher(); print('AI Models loaded successfully!')"
+
+# Monitor GPU usage (if available)
+nvidia-smi  # Check GPU memory usage
+```
+
+### 🔍 AI Model Status Indicators
+When running the system, look for these log messages:
+- `"Using pretrained light estimator"` ✅ ResNet18 + DPT active
+- `"Using enhanced relighting model"` ✅ VGG19 style refinement active
+- `"Fallback to basic estimator"` ⚠️ Traditional methods only
+
+### 🎨 Quality Optimization
+1. **HDR Scenes**: AI handles HDR better than traditional methods
+2. **Multiple Angles**: AI consistency across viewpoints
+3. **Ground Truth Comparison**: AI results often exceed manual work
+4. **Progressive Testing**: Start simple, AI handles complexity well
+
+### 🔧 AI-Specific Debugging
+1. **Check AI Model Loading**: Look for "initialized successfully" messages
+2. **Memory Issues**: Reduce image resolution if GPU memory is limited
+3. **Slow Processing**: First run downloads models (~2GB), subsequent runs are faster
+4. **Quality Issues**: Try different pretrained model combinations
+
+### 📈 Performance Tuning
+```python
+# Disable specific AI models if needed
+config = {
+    'use_pretrained_models': True,  # Master switch
+    'light_estimation': {
+        'use_cnn_features': False,  # Disable ResNet18
+        'use_depth_estimation': False,  # Disable DPT
+    },
+    'neural_relighting': {
+        'use_style_refinement': False,  # Disable VGG19
+    }
+}
+matcher = LightMatcher(config)
+```
+
+## 🎆 Next Steps with AI Enhancement
+
+After testing with your images:
+1. **Collect AI Results**: Save successful AI-enhanced combinations
+2. **Compare Methods**: Traditional vs AI-enhanced results
+3. **Performance Analysis**: Document which AI models help most
+4. **Scale Up**: Process larger datasets with confidence
+5. **Fine-tune**: Adjust AI model parameters for your specific use case
+
+### 📄 AI Model Information
+- **ResNet18**: 45MB download, ~100ms processing
+- **Intel DPT-Large**: 1.4GB download, ~2-5s processing  
+- **VGG19**: 550MB download, ~200ms processing
+- **Total first-time setup**: ~2GB, subsequent runs are much faster
+

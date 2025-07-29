@@ -49,7 +49,7 @@ class EnhancedRelighting:
         
         try:
             # Use VGG19 for style feature extraction
-            vgg = models.vgg19(pretrained=True).features
+            vgg = models.vgg19(weights=models.VGG19_Weights.DEFAULT).features
             self.style_extractor = vgg[:21]  # Up to conv4_2
             self.style_extractor.eval()
             self.style_extractor.to(self.device)
@@ -98,8 +98,10 @@ class EnhancedRelighting:
         if self.style_extractor is not None:
             result = self._apply_style_refinement(result, lighting_params)
         
-        # Stage 6: Final intensity adjustment
-        result = result * lighting_params.intensity
+        # Stage 6: Final intensity adjustment (ensure minimum brightness)
+        intensity_factor = max(lighting_params.intensity, 0.3)  # Minimum 30% brightness
+        # Use a more balanced intensity application
+        result = result * (0.5 + 0.5 * intensity_factor)
         
         # Ensure valid range
         result = np.clip(result, 0, 255).astype(np.uint8)

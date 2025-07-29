@@ -78,6 +78,8 @@ class LightMatcher:
         cg_object: Union[str, np.ndarray],
         output_path: Optional[str] = None,
         mask: Optional[np.ndarray] = None,
+        save_relighted_cg: bool = True,
+        relighted_cg_path: Optional[str] = None,
         **kwargs
     ) -> Dict[str, Any]:
         """
@@ -88,6 +90,8 @@ class LightMatcher:
             cg_object: Path to CG object file or rendered image array
             output_path: Path to save the final result
             mask: Optional mask for CG object placement
+            save_relighted_cg: Whether to save the relighted CG object separately
+            relighted_cg_path: Path to save the relighted CG object (auto-generated if None)
             **kwargs: Additional parameters
             
         Returns:
@@ -110,6 +114,19 @@ class LightMatcher:
             relit_cg = self._relight_cg_object(cg_img, lighting_params)
             self.logger.info("CG object relighting completed")
             
+            # Save relighted CG object if requested
+            if save_relighted_cg:
+                if not relighted_cg_path:
+                    if output_path:
+                        # Generate path based on output path
+                        path_obj = Path(output_path)
+                        relighted_cg_path = str(path_obj.parent / f"{path_obj.stem}_relighted_cg{path_obj.suffix}")
+                    else:
+                        # Default path if no output path specified
+                        relighted_cg_path = "data/output/relighted_cg.jpg"
+                self._save_result(relit_cg, relighted_cg_path)
+                self.logger.info(f"Relighted CG object saved to {relighted_cg_path}")
+            
             # Step 4: Composite the relit CG object into the scene
             final_result = self._composite_result(scene_img, relit_cg, mask)
             self.logger.info("Composition completed")
@@ -121,6 +138,8 @@ class LightMatcher:
             
             return {
                 'result': final_result,
+                'relighted_cg': relit_cg,
+                'relighted_cg_path': relighted_cg_path if save_relighted_cg else None,
                 'lighting_params': lighting_params,
                 'success': True,
                 'message': 'Light matching completed successfully'
@@ -259,7 +278,11 @@ if __name__ == "__main__":
     result = matcher.match_lighting(
         scene_image="data/input/scene.jpg",
         cg_object="data/input/cg_object.jpg",
-        output_path="data/output/result.jpg"
+        output_path="data/output/result.jpg",
+        save_relighted_cg=True,  # Save the relighted CG object
+        relighted_cg_path="data/output/my_relighted_cg.jpg"  # Optional: specify custom path
     )
     
     print("Light matching result:", result['message'])
+    if result['relighted_cg_path']:
+        print(f"Relighted CG object saved to: {result['relighted_cg_path']}")

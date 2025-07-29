@@ -55,7 +55,7 @@ class PretrainedLightEstimator:
         
         try:
             # Use pretrained ResNet18 for feature extraction
-            self.feature_extractor = models.resnet18(pretrained=True)
+            self.feature_extractor = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
             # Remove the final classification layer
             self.feature_extractor = torch.nn.Sequential(
                 *list(self.feature_extractor.children())[:-1]

@@ -290,9 +290,10 @@ class TraditionalRelighting:
         """Apply traditional relighting techniques."""
         result = cg_image.copy().astype(np.float32)
         
-        # Apply intensity adjustment
-        intensity_factor = lighting_params.intensity
-        result = result * intensity_factor
+        # Apply intensity adjustment (ensure minimum brightness)
+        intensity_factor = max(lighting_params.intensity, 0.3)  # Minimum 30% brightness
+        # Use a more balanced intensity application
+        result = result * (0.5 + 0.5 * intensity_factor)
         
         # Apply color temperature adjustment
         result = self._adjust_color_temperature(result, lighting_params.color_temp)
