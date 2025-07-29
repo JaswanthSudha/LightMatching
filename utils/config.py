@@ -37,6 +37,7 @@ class Config:
     def _get_default_config(self) -> Dict[str, Any]:
         """Get default configuration values."""
         return {
+            'use_pretrained_models': True,  # Enable pretrained models by default
             'scene_analysis': {
                 'shadow_threshold': 0.3,
                 'highlight_threshold': 0.8,

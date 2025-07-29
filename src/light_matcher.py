@@ -11,7 +11,9 @@ import logging
 from .data_structures import LightingParameters
 from .light_estimation.scene_analyzer import SceneAnalyzer
 from .light_estimation.light_estimator import LightEstimator
+from .light_estimation.pretrained_light_estimator import PretrainedLightEstimator
 from .neural_relighting.relighting_model import RelightingModel
+from .neural_relighting.pretrained_relighting import HybridRelightingModel
 from .preprocessing.image_processor import ImageProcessor
 from .postprocessing.compositor import Compositor
 from utils.config import Config
@@ -40,8 +42,31 @@ class LightMatcher:
         
         # Initialize components
         self.scene_analyzer = SceneAnalyzer(self.config.scene_analysis)
-        self.light_estimator = LightEstimator(self.config.light_estimation)
-        self.relighting_model = RelightingModel(self.config.neural_relighting)
+        
+        # Use pretrained models if available, fallback to basic estimator
+        use_pretrained = self.config.get('use_pretrained_models', True)
+        if use_pretrained:
+            try:
+                self.light_estimator = PretrainedLightEstimator(self.config.light_estimation)
+                self.logger.info("Using pretrained light estimator")
+            except Exception as e:
+                self.logger.warning(f"Failed to initialize pretrained estimator: {e}")
+                self.light_estimator = LightEstimator(self.config.light_estimation)
+                self.logger.info("Fallback to basic light estimator")
+        else:
+            self.light_estimator = LightEstimator(self.config.light_estimation)
+        
+        # Use enhanced relighting if available
+        if use_pretrained:
+            try:
+                self.relighting_model = HybridRelightingModel(self.config.neural_relighting)
+                self.logger.info("Using enhanced relighting model")
+            except Exception as e:
+                self.logger.warning(f"Failed to initialize enhanced relighting: {e}")
+                self.relighting_model = RelightingModel(self.config.neural_relighting)
+                self.logger.info("Fallback to basic relighting model")
+        else:
+            self.relighting_model = RelightingModel(self.config.neural_relighting)
         self.image_processor = ImageProcessor(self.config.preprocessing)
         self.compositor = Compositor(self.config.postprocessing)
         
